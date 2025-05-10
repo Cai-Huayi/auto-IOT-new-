@@ -1,0 +1,56 @@
+{
+  "material_params": {
+    "aggregate_type": "碎石",
+    "water_cement_ratio": 0.42,
+    "proportion": "1:2:3"
+  },
+  "env_params": {
+    "humidity": 70.7,
+    "temperature": 31.3,
+    "slump": 158.0,
+    "rebar_density": 0.45
+  },
+  "strategy": {
+    "recommended_freq_hz": 195,
+    "recommended_time_s": 14,
+    "recommended_depth_cm": 37,
+    "points_layout": [
+      {
+        "x": 0.0,
+        "y": 0.0
+      },
+      {
+        "x": 0.0,
+        "y": 33.985
+      },
+      {
+        "x": 0.0,
+        "y": 67.97
+      },
+      {
+        "x": 33.985,
+        "y": 0.0
+      },
+      {
+        "x": 33.985,
+        "y": 33.985
+      },
+      {
+        "x": 33.985,
+        "y": 67.97
+      },
+      {
+        "x": 67.97,
+        "y": 0.0
+      },
+      {
+        "x": 67.97,
+        "y": 33.985
+      },
+      {
+        "x": 67.97,
+        "y": 67.97
+      }
+    ]
+  }
+}
