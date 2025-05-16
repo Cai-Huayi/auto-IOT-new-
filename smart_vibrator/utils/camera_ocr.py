@@ -13,23 +13,23 @@ from PIL import Image
 # 配置Tesseract OCR
 pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'  # Ubuntu系统中的默认路径
 
-def capture_image(device_id=0, save_path=None):
+def capture_image(save_path=None):
     """
     从摄像头捕获图像
-    :param device_id: 摄像头设备ID，默认为0 (/dev/video0)
     :param save_path: 可选，保存图像的路径
     :return: 捕获的图像(numpy数组)或None(如果失败)
     """
+    dispW = 640  # 视频显示窗口的宽度
+    dispH = 480  # 视频显示窗口的高度
+    flip = 0     # 摄像头图像的翻转 (0: no flip, 1: counterclockwise 90, 2: upside down, 3: clockwise 90, 4: horizontal flip, etc.)
+    camSet = f'nvarguscamerasrc ! video/x-raw(memory:NVMM), width=3264, height=2464, format=NV12, framerate=21/1 ! nvvidconv flip-method={flip} ! video/x-raw, width={dispW}, height={dispH}, format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink'
+    
     try:
         # 打开摄像头
-        cap = cv2.VideoCapture(device_id)
+        cap = cv2.VideoCapture(camSet)
         if not cap.isOpened():
-            print(f"错误：无法打开摄像头设备 {device_id}")
+            print(f"错误：无法打开摄像头设备")
             return None
-        
-        # 设置分辨率（可根据实际摄像头调整）
-        cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
         
         # 等待摄像头初始化
         time.sleep(1)
@@ -182,7 +182,7 @@ def ocr_extract_material_info():
         
         print("正在从摄像头捕获图像...")
         # 捕获图像
-        image = capture_image(device_id=0, save_path=save_path)
+        image = capture_image(save_path=save_path)
         
         if image is None:
             print("警告：无法从摄像头获取图像，返回默认值")
@@ -213,8 +213,12 @@ def ocr_extract_material_info():
 
 def test_camera():
     """测试摄像头是否可用"""
+    dispW = 640
+    dispH = 480
+    flip = 0
+    camSet = f'nvarguscamerasrc ! video/x-raw(memory:NVMM), width=3264, height=2464, format=NV12, framerate=21/1 ! nvvidconv flip-method={flip} ! video/x-raw, width={dispW}, height={dispH}, format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink'
     try:
-        cap = cv2.VideoCapture(0)
+        cap = cv2.VideoCapture(camSet)
         if not cap.isOpened():
             print("错误：无法打开摄像头")
             return False
